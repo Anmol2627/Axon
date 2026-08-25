@@ -1,0 +1,3 @@
+Sample resume text for John Doe.
+Skills: Python, Javascript, React, Nextjs, SQL, Machine Learning.
+Experience: Software Engineer at Google (2020-2023). Worked on backend infrastructure. Data Scientist at Spotify (2018-2020). Built ML pipelines.

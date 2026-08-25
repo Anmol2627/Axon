@@ -1,0 +1,29 @@
+Jane Doe
+Email: jane.doe@example.com
+LinkedIn: https://linkedin.com/in/janedoe
+
+Profile:
+Experienced Machine Learning Engineer with 5 years of experience building scalable AI models and deploying them in production. Strong background in Python, PyTorch, and cloud infrastructure.
+
+Skills:
+- Programming: Python, C++, SQL
+- Machine Learning: PyTorch, TensorFlow, Scikit-Learn
+- MLOps: Docker, Kubernetes, AWS SageMaker
+- Data Engineering: Apache Spark, Pandas
+
+Experience:
+Senior AI Engineer at TechInnovate
+2020 - Present
+- Designed and deployed a recommendation engine using PyTorch that increased user engagement by 25%.
+- Containerized model inference microservices with Docker and deployed to Kubernetes cluster.
+
+Machine Learning Intern at DataCorp
+2019 - 2020
+- Built a NLP text classification model using TensorFlow.
+
+Projects:
+- Neural Network Visualizer: A React application that visualizes weights of PyTorch models in real-time.
+- Smart Plant Monitor: IoT project utilizing Raspberry Pi to monitor soil moisture and predict watering needs using Scikit-Learn.
+
+Education:
+B.S. in Computer Science, University of California, Berkeley

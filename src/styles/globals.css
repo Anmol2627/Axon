@@ -1,0 +1,349 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ============================================================
+   Axon Design System — Global CSS
+   Dark-first, glassmorphism, Inter typography
+   ============================================================ */
+
+/* ── CSS Custom Properties (Design Tokens) ─────────────────── */
+:root {
+  /* Base surfaces */
+  --bg-base: #0B0D12;
+  --bg-surface: #12141C;
+  --bg-elevated: #181B26;
+  --bg-card: #1C1F2E;
+
+  /* Glass tiers */
+  --glass-primary-bg: rgba(255,255,255,0.06);
+  --glass-primary-border: rgba(255,255,255,0.10);
+  --glass-primary-blur: 24px;
+  --glass-primary-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
+
+  --glass-secondary-bg: rgba(255,255,255,0.04);
+  --glass-secondary-border: rgba(255,255,255,0.07);
+  --glass-secondary-blur: 14px;
+  --glass-secondary-shadow: 0 4px 16px rgba(0,0,0,0.3);
+
+  --glass-floating-bg: rgba(12,14,22,0.85);
+  --glass-floating-border: rgba(255,255,255,0.12);
+  --glass-floating-blur: 32px;
+  --glass-floating-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.3);
+
+  /* Accent palette */
+  --accent-violet: #7C3AED;
+  --accent-violet-light: #8B5CF6;
+  --accent-violet-glow: rgba(124,58,237,0.3);
+  --accent-blue: #2563EB;
+  --accent-blue-light: #3B82F6;
+  --accent-cyan: #0891B2;
+  --accent-cyan-light: #06B6D4;
+  --accent-emerald: #059669;
+  --accent-emerald-light: #10B981;
+  --accent-amber: #D97706;
+  --accent-amber-light: #F59E0B;
+  --accent-red: #DC2626;
+  --accent-red-light: #EF4444;
+
+  /* Brand gradient */
+  --gradient-brand: linear-gradient(135deg, #7C3AED 0%, #2563EB 50%, #06B6D4 100%);
+  --gradient-brand-text: linear-gradient(135deg, #8B5CF6, #60A5FA, #22D3EE);
+  --gradient-emerald: linear-gradient(135deg, #059669, #10B981);
+  --gradient-surface: linear-gradient(135deg, #181B26 0%, #12141C 100%);
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+  --text-4xl: 2.25rem;   /* 36px */
+  --text-5xl: 3rem;      /* 48px */
+  --text-6xl: 3.75rem;   /* 60px */
+  --text-7xl: 4.5rem;    /* 72px */
+
+  /* Spacing (4px base) */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Text colors */
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --text-faint: #334155;
+  --text-inverse: #0B0D12;
+
+  /* Borders */
+  --border-subtle: rgba(255,255,255,0.06);
+  --border-default: rgba(255,255,255,0.10);
+  --border-strong: rgba(255,255,255,0.18);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Sidebar */
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 72px;
+  --topbar-height: 64px;
+}
+
+/* ── Reset & Base ───────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+/* ── Typography Utilities ──────────────────────────────────── */
+
+.text-gradient {
+  background: var(--gradient-brand-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-emerald {
+  background: var(--gradient-emerald);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Glass Utility Classes ─────────────────────────────────── */
+
+.glass-primary {
+  background: var(--glass-primary-bg);
+  backdrop-filter: blur(var(--glass-primary-blur));
+  -webkit-backdrop-filter: blur(var(--glass-primary-blur));
+  border: 1px solid var(--glass-primary-border);
+  box-shadow: var(--glass-primary-shadow);
+}
+
+.glass-secondary {
+  background: var(--glass-secondary-bg);
+  backdrop-filter: blur(var(--glass-secondary-blur));
+  -webkit-backdrop-filter: blur(var(--glass-secondary-blur));
+  border: 1px solid var(--glass-secondary-border);
+  box-shadow: var(--glass-secondary-shadow);
+}
+
+.glass-floating {
+  background: var(--glass-floating-bg);
+  backdrop-filter: blur(var(--glass-floating-blur));
+  -webkit-backdrop-filter: blur(var(--glass-floating-blur));
+  border: 1px solid var(--glass-floating-border);
+  box-shadow: var(--glass-floating-shadow);
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+/* ── Keyframes ─────────────────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 0.8; }
+  50%  { transform: scale(1.15); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(28px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(28px) rotate(-360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes blob-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(40px, -30px) scale(1.05); }
+  66%       { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes draw-line {
+  from { stroke-dashoffset: 100%; }
+  to   { stroke-dashoffset: 0%; }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px var(--accent-violet-glow); }
+  50%       { box-shadow: 0 0 40px var(--accent-violet-glow), 0 0 80px rgba(124,58,237,0.15); }
+}
+
+/* ── Animation Utilities ───────────────────────────────────── */
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.25s ease forwards;
+}
+
+.animate-slide-right {
+  animation: slideInRight 0.25s ease forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Stagger children */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 300ms; }
+
+/* ── Skeleton Shimmer ──────────────────────────────────────── */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.04) 25%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(255,255,255,0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite;
+  border-radius: var(--radius-md);
+}
+
+/* ── Reduced Motion ────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .animate-float,
+  .animate-glow,
+  [class*="blob"] {
+    animation: none !important;
+  }
+}
