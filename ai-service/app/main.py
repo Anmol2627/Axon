@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from .api import projects, resume, matching, rag
+from .api import projects, resume, matching, rag, evaluate
+
 import logging
 
 # Ensure GROQ_API_KEY is present
@@ -14,23 +15,24 @@ if not os.getenv("GROQ_API_KEY"):
 
 app = FastAPI(
     title="Axon AI Intelligence Service",
-    description="Python backend for AI intelligence features in Axon",
-    version="1.0.0"
+    version="1.0.0",
+    description="Provides AI-powered features for Axon using Groq and standard LLMs"
 )
 
-# Configure CORS for Next.js frontend
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Allow all origins for the MVP (Vercel deployment)
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(resume.router, prefix="/api/ai/resume", tags=["Resume Intelligence"])
-app.include_router(projects.router, prefix="/api/ai/project", tags=["Project Analysis"])
-app.include_router(matching.router, prefix="/api/ai/match", tags=["Semantic Matching"])
-app.include_router(rag.router, prefix="/api/ai/rag", tags=["RAG"])
+app.include_router(projects.router, prefix="/api/ai/project", tags=["projects"])
+app.include_router(resume.router, prefix="/api/ai/resume", tags=["resume"])
+app.include_router(matching.router, prefix="/api/ai/match", tags=["matching"])
+app.include_router(rag.router, prefix="/api/ai/rag", tags=["rag"])
+app.include_router(evaluate.router, prefix="/api/ai/evaluate", tags=["evaluate"])
 
 @app.get("/health")
 def health_check():

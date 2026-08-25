@@ -19,6 +19,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/app/discover', label: 'Discover', icon: <span style={{ fontSize: '1.2rem' }}>⌕</span> },
   { href: '/app/team', label: 'My Team', icon: <span style={{ fontSize: '1.2rem' }}>👥</span> },
   { href: '/app/insights', label: 'AI Insights', icon: <span style={{ fontSize: '1.2rem' }}>✦</span> },
+  { href: '/app/evaluate', label: 'Evaluate Repo', icon: <span style={{ fontSize: '1.2rem' }}>✦</span> },
   { href: '/app/profile', label: 'Profile', icon: <span style={{ fontSize: '1.2rem' }}>👤</span> },
   { href: '/app/settings', label: 'Settings', icon: <span style={{ fontSize: '1.2rem' }}>⚙</span> },
 ];
