@@ -177,7 +177,7 @@ export default function LandingPage() {
               marginBottom: 36,
               maxWidth: 480,
             }}>
-              Axon understands your project, identifies the skills it needs, and connects you with the most compatible collaborators — with a plain-language explanation of why each person fits.
+              Axon helps you form better project teams by using AI to analyze your project requirements and intelligently match people based on skills, experience, interests, and availability.
             </p>
 
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>

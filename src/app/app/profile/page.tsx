@@ -10,6 +10,11 @@ export default function ProfilePage() {
   const { currentUser, currentProfile, updateProfile } = useApp();
   
   const [isEditing, setIsEditing] = useState(false);
+  const [uploadPhase, setUploadPhase] = useState<'idle' | 'uploading' | 'analyzing' | 'success' | 'error'>('idle');
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  
+  // Ref for hidden file input
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   // Form State
   const [formSkills, setFormSkills] = useState(currentProfile?.skills || []);
@@ -38,8 +43,76 @@ export default function ProfilePage() {
         links: formLinks,
       } as any);
       setIsEditing(false);
+      setUploadPhase('idle');
     } catch (err) {
       console.error('Failed to save profile updates.', err);
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate size (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+      setUploadError("File is too large (max 10MB)");
+      setUploadPhase('error');
+      return;
+    }
+
+    try {
+      setUploadPhase('uploading');
+      setUploadError(null);
+      setIsEditing(true); // Force edit mode to show the new extracted data
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      // We jump straight to analyzing after short delay for UX
+      setTimeout(() => setUploadPhase('analyzing'), 800);
+
+      const response = await fetch('/api/ai/resume/parse', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `Server error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      
+      // Auto-populate form
+      if (data.role) setFormRole(data.role);
+      if (data.skills && data.skills.length > 0) {
+        const newSkills = data.skills.map((s: any) => ({
+          name: s.name,
+          category: s.category || 'Technical',
+          proficiency: s.proficiency || 'Intermediate'
+        }));
+        setFormSkills(newSkills);
+      }
+      if (data.experience && data.experience.length > 0) {
+        setFormExperience(data.experience.map((e: any, i: number) => ({ ...e, id: `ai_exp_${i}` })));
+      }
+      if (data.education && data.education.length > 0) {
+        setFormEducation(data.education.map((e: any, i: number) => ({ ...e, id: `ai_edu_${i}` })));
+      }
+      
+      // Extract links if possible from Github/LinkedIn
+      const newLinks = { ...formLinks };
+      let updatedLinks = false;
+      if (data.linkedin) { newLinks.linkedin = data.linkedin; updatedLinks = true; }
+      if (data.github) { newLinks.github = data.github; updatedLinks = true; }
+      if (updatedLinks) setFormLinks(newLinks);
+
+      setUploadPhase('success');
+      
+    } catch (err: any) {
+      console.error("Upload error:", err);
+      setUploadError(err.message || "Failed to parse resume.");
+      setUploadPhase('error');
     }
   };
 
@@ -71,6 +144,30 @@ export default function ProfilePage() {
           </div>
           
           <div style={{ display: 'flex', gap: 12 }}>
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              style={{ display: 'none' }} 
+              accept=".pdf,.docx,.txt" 
+              onChange={handleFileUpload} 
+            />
+            
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploadPhase === 'uploading' || uploadPhase === 'analyzing'}
+              style={{ 
+                padding: '10px 16px', borderRadius: 'var(--radius-md)', 
+                background: 'var(--color-bg-base)', color: 'var(--color-organic-moss)', 
+                border: '1px solid var(--color-organic-moss)', fontWeight: 600, 
+                cursor: (uploadPhase === 'uploading' || uploadPhase === 'analyzing') ? 'not-allowed' : 'pointer', 
+                boxShadow: 'var(--shadow-subtle)',
+                display: 'flex', alignItems: 'center', gap: 8,
+                opacity: (uploadPhase === 'uploading' || uploadPhase === 'analyzing') ? 0.6 : 1
+              }}
+            >
+              ✦ Upload Resume (AI)
+            </button>
+
             {!isEditing ? (
               <button 
                 onClick={() => {
@@ -100,6 +197,25 @@ export default function ProfilePage() {
         </div>
 
 
+
+        {/* AI Upload Status */}
+        {uploadPhase !== 'idle' && (
+          <div style={{ marginBottom: 24 }}>
+            <GlassCard tier="secondary" style={{ padding: 24, borderLeft: '4px solid var(--color-organic-moss)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                {uploadPhase === 'uploading' && <span style={{ fontSize: '1.2rem' }}>☁️ Uploading...</span>}
+                {uploadPhase === 'analyzing' && <span style={{ fontSize: '1.2rem', color: 'var(--color-organic-moss)', animation: 'pulse 1.5s infinite' }}>✦ Analyzing your experience...</span>}
+                {uploadPhase === 'success' && <span style={{ fontSize: '1.2rem', color: 'var(--color-organic-sage)' }}>✅ Profile populated successfully! Please review and save.</span>}
+                {uploadPhase === 'error' && (
+                  <div style={{ color: 'var(--color-semantic-critical)' }}>
+                    <span style={{ fontSize: '1.2rem', marginRight: 8 }}>❌</span> 
+                    <strong>Error:</strong> {uploadError}
+                  </div>
+                )}
+              </div>
+            </GlassCard>
+          </div>
+        )}
 
         {/* Profile Details */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
@@ -167,7 +283,7 @@ export default function ProfilePage() {
                 <div key={idx} style={{ padding: '8px 16px', borderRadius: 'var(--radius-full)', background: 'var(--color-bg-base)', border: '1px solid var(--border-subtle)', fontSize: '0.9rem', color: 'var(--color-text-primary)', display: 'flex', alignItems: 'center', gap: 8 }}>
                   {s.name} <span style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>{s.proficiency}</span>
                   {isEditing && (
-                    <button onClick={() => removeSkill(idx)} style={{ background: 'none', border: 'none', color: 'var(--color-semantic-critical)', cursor: 'pointer', padding: 0, marginLeft: 4 }}>&times;</button>
+                    <button aria-label={`Remove ${s.name} skill`} onClick={() => removeSkill(idx)} style={{ background: 'none', border: 'none', color: 'var(--color-semantic-critical)', cursor: 'pointer', padding: 0, marginLeft: 4 }}>&times;</button>
                   )}
                 </div>
               ))}

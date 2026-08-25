@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from groq import Groq
 from app.models.domain import ProjectAnalysis, ProjectRequirement, RoleRequirement, ProjectRisk
 
@@ -10,6 +11,22 @@ class ExtractionService:
             self.client = Groq(api_key=self.groq_api_key)
         else:
             self.client = None
+
+    def _clean_llm_json(self, raw: str) -> str:
+        """Clean LLM output to extract valid JSON."""
+        cleaned = raw
+        if '<think>' in cleaned:
+            cleaned = re.sub(r'<think>.*?</think>', '', cleaned, flags=re.DOTALL).strip()
+            cleaned = cleaned.replace('<think>', '')
+
+        cleaned = re.sub(r'```json\s*', '\n', cleaned)
+        cleaned = re.sub(r'```\s*', '\n', cleaned)
+        cleaned = cleaned.strip()
+
+        json_match = re.search(r'\{.*\}', cleaned, flags=re.DOTALL)
+        if json_match:
+            return json_match.group(0)
+        return cleaned
 
     async def analyze_project(self, title: str, description: str, category: str) -> ProjectAnalysis:
         if not self.client:
@@ -89,14 +106,22 @@ Schema:
             )
             
             result_str = chat_completion.choices[0].message.content
-            # Qwen thinking models may wrap output in <think>...</think> tags
-            import re
-            result_str = re.sub(r'<think>.*?</think>', '', result_str, flags=re.DOTALL).strip()
-            # Extract JSON object if there's any surrounding text
-            json_match = re.search(r'\{.*\}', result_str, flags=re.DOTALL)
-            if json_match:
-                result_str = json_match.group(0)
-            data = json.loads(result_str)
+            cleaned_json = self._clean_llm_json(result_str)
+            
+            try:
+                data = json.loads(cleaned_json)
+            except json.JSONDecodeError as e:
+                # Fallback if json is totally broken
+                return ProjectAnalysis(
+                    projectId="generated",
+                    complexity="Medium",
+                    recommendedTeamSize=1,
+                    recommendedRoles=[],
+                    requiredSkills=[],
+                    insights=["Failed to parse AI output into structured format."],
+                    risks=[ProjectRisk(label="AI Parse Error", severity="Amber")],
+                    recommendedWorkflow=[]
+                )
             
             data["projectId"] = "generated"
             

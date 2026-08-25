@@ -6,6 +6,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from .api import projects, resume, matching, rag
+import logging
+
+# Ensure GROQ_API_KEY is present
+if not os.getenv("GROQ_API_KEY"):
+    logging.warning("GROQ_API_KEY environment variable is missing. AI functionality will fallback to mock responses.")
 
 app = FastAPI(
     title="Axon AI Intelligence Service",

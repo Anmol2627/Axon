@@ -75,9 +75,9 @@ class ResumeService:
 
     def _deterministic_extract(self, text: str, filename: str) -> dict:
         """Regex-based fallback extraction when Groq is unavailable."""
-        email_pattern = r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+'
+        email_pattern = r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+'
         phone_pattern = r'[\+]?[(]?[0-9]{1,4}[)]?[-\s\./0-9]{7,15}'
-        url_pattern = r'https?://[^\s<>\"\']+' 
+        url_pattern = r'https?://[^\s<>\"\']+|[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+/[^\s<>\"\']+' 
 
         emails = re.findall(email_pattern, text)
         phones = re.findall(phone_pattern, text)
