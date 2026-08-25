@@ -24,14 +24,14 @@ export default function HomePage() {
       alignItems: 'center',
       justifyContent: 'center',
       height: '100vh',
-      background: '#0B0D12',
+      background: 'var(--color-bg-base)',
     }}>
       <div style={{
         width: 48,
         height: 48,
         borderRadius: '50%',
-        border: '3px solid rgba(139,92,246,0.2)',
-        borderTopColor: '#8B5CF6',
+        border: '3px solid var(--border-subtle)',
+        borderTopColor: 'var(--color-action-terracotta)',
         animation: 'spin-slow 0.8s linear infinite',
       }} />
     </div>

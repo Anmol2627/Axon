@@ -20,21 +20,21 @@ export function AnimatedBackground({
   const blobs =
     variant === 'auth'
       ? [
-          { color: '#7C3AED', x: '15%', y: '20%', size: 400, duration: 18, delay: 0 },
-          { color: '#2563EB', x: '70%', y: '60%', size: 350, duration: 22, delay: 3 },
-          { color: '#06B6D4', x: '50%', y: '80%', size: 300, duration: 16, delay: 6 },
+          { color: '#D97A62', x: '15%', y: '20%', size: 400, duration: 18, delay: 0 },
+          { color: '#A2AA96', x: '70%', y: '60%', size: 350, duration: 22, delay: 3 },
+          { color: '#F3EFE7', x: '50%', y: '80%', size: 300, duration: 16, delay: 6 },
         ]
       : variant === 'landing'
       ? [
-          { color: '#7C3AED', x: '10%', y: '15%', size: 600, duration: 20, delay: 0 },
-          { color: '#2563EB', x: '80%', y: '20%', size: 500, duration: 25, delay: 4 },
-          { color: '#06B6D4', x: '60%', y: '70%', size: 450, duration: 18, delay: 8 },
-          { color: '#059669', x: '20%', y: '75%', size: 380, duration: 23, delay: 2 },
+          { color: '#D97A62', x: '10%', y: '15%', size: 600, duration: 20, delay: 0 },
+          { color: '#A2AA96', x: '80%', y: '20%', size: 500, duration: 25, delay: 4 },
+          { color: '#E5D3B3', x: '60%', y: '70%', size: 450, duration: 18, delay: 8 },
+          { color: '#6D775E', x: '20%', y: '75%', size: 380, duration: 23, delay: 2 },
         ]
       : [
-          { color: '#7C3AED', x: '-5%', y: '10%', size: 500, duration: 22, delay: 0 },
-          { color: '#2563EB', x: '85%', y: '5%', size: 400, duration: 28, delay: 5 },
-          { color: '#059669', x: '70%', y: '80%', size: 350, duration: 20, delay: 10 },
+          { color: '#D97A62', x: '-5%', y: '10%', size: 500, duration: 22, delay: 0 },
+          { color: '#A2AA96', x: '85%', y: '5%', size: 400, duration: 28, delay: 5 },
+          { color: '#6D775E', x: '70%', y: '80%', size: 350, duration: 20, delay: 10 },
         ];
 
   return (
