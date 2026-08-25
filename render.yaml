@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: axon-ai-service
+    env: python
+    rootDir: ai-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: sh -c 'uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}'
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.11.0

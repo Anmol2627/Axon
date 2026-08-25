@@ -1,7 +1,7 @@
 import os
 import json
 from groq import Groq
-from ..models.domain import ProjectAnalysis, ProjectRequirement, RoleRequirement, ProjectRisk
+from app.models.domain import ProjectAnalysis, ProjectRequirement, RoleRequirement, ProjectRisk
 
 class ExtractionService:
     def __init__(self):

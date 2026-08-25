@@ -3,7 +3,7 @@ import os
 import json
 from pypdf import PdfReader
 from groq import Groq
-from ..models.domain import ResumeExtractionResponse, SkillExtraction
+from app.models.domain import ResumeExtractionResponse, SkillExtraction
 
 class ResumeService:
     def __init__(self):

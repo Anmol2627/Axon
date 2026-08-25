@@ -3,7 +3,7 @@ from typing import List
 import numpy as np
 import json
 from supabase import create_client, Client
-from ..models.domain import MatchInsight
+from app.models.domain import MatchInsight
 
 # Initialize model lazily to avoid slow startup if not used immediately
 _model = None
