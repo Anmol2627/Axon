@@ -9,7 +9,7 @@ Axon is an AI-powered platform designed to form effective project teams based on
 - **Explainable Semantic Matching Engine**: Discover the perfect collaborators using a deterministic weighted scoring system (Skill Match, Role Relevance, Experience, Interests). Axon gives you transparent, plain-language insights explaining *why* someone is a good match.
 - **Premium User Experience**: Designed with a warm, calm, organic aesthetic. Enjoy smooth micro-animations, glassmorphism, and dynamic state feedback.
 
-## Architecture
+## Application Architecture
 
 - **Frontend**: Next.js (App Router), React, TypeScript.
 - **Backend**: FastAPI (Python), Pydantic for validation, Groq SDK for fast LLM inference.
